@@ -1,4 +1,4 @@
-use crate::{timer::Timer, Cell};
+use crate::Cell;
 
 #[cfg_attr(target_arch = "wasm32", wasm_bindgen::prelude::wasm_bindgen)]
 pub struct Universe {
@@ -12,44 +12,44 @@ impl Universe {
     pub fn new(width: u32, height: u32) -> Self {
         debug!(%width, %height, "Creating new universe");
 
-        let cells = (0..width * height)
-            .map(|#[cfg_attr(target_arch = "wasm32", allow(unused))] idx| {
-                #[cfg(target_arch = "wasm32")]
-                if js_sys::Math::random() < 0.5 {
-                    Cell::Alive
-                } else {
-                    Cell::Dead
-                }
+        let mut cells = vec![false; (width * height) as usize];
+        let mut rng = fastrand::Rng::new();
+        let mut idx = 0;
 
-                #[cfg(not(target_arch = "wasm32"))]
-                if idx % 13 == 0 {
-                    Cell::Alive
-                } else {
-                    Cell::Dead
-                }
-            })
-            .collect();
+        // Out of a random `u128` number, generate 32 `bool`s at a time.
+        while idx + 32 < cells.len() {
+            let n = rng.u128(..);
+            // There's a +0.300ns/iter penalty if you inline them.
+            let even_bools = n & 0x01010101010101010101010101010101_u128;
+            let odd_bools = (n & 0x10101010101010101010101010101010_u128) >> 4;
+
+            let bools = unsafe { std::mem::transmute::<u128, [bool; 16]>(even_bools) };
+            cells[idx..idx + 16].copy_from_slice(&bools);
+            idx += 16;
+
+            let bools = unsafe { std::mem::transmute::<u128, [bool; 16]>(odd_bools) };
+            cells[idx..idx + 16].copy_from_slice(&bools);
+            idx += 16;
+        }
+
+        // Generate the rest of them manually.
+        for cell in &mut cells[idx..] {
+            *cell = rng.bool();
+        }
 
         Self {
-            width,
+            // SAFETY: A cell has the same states as a `bool`.
+            cells: unsafe { std::mem::transmute::<Vec<bool>, Vec<Cell>>(cells) },
             height,
-            cells,
+            width,
         }
     }
 
     pub fn tick(&mut self) {
-        let _t = Timer::new("universe::tick");
-
-        let mut next = {
-            let _t = Timer::new("universe::clone_cells");
-
-            self.cells.clone()
-        };
+        let mut next = self.cells.clone();
 
         for row in 0..self.height {
             for col in 0..self.width {
-                let _t = Timer::new("universe::process_single_cell");
-
                 let idx = self.index_of_cell(row, col);
                 let cell = self.cells[idx];
                 let live_neighbors = self.live_neighbor_count(row, col);

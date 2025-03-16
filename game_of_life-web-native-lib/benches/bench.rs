@@ -7,7 +7,12 @@ extern crate test;
 #[cfg(test)]
 mod benches {
     use game_of_life_web_native_lib::universe::Universe;
-    use test::Bencher;
+    use test::{black_box, Bencher};
+
+    #[bench]
+    fn universe_creation(b: &mut Bencher) {
+        b.iter(|| black_box(Universe::new(256, 256)));
+    }
 
     #[bench]
     fn universe_ticks(b: &mut Bencher) {

@@ -12,10 +12,3 @@ tracing = "0.1.40"
 [workspace.dependencies.tracing-subscriber]
 version = "0.3.18"
 features = ["parking_lot", "tracing-log", "env-filter"]
-
-[profile.release.package.game_of_life-web-native-lib]
-# Optimize for small code size.
-opt-level = "s"
-
-[profile.dev.package.game_of_life-web-native-lib]
-opt-level = 3
