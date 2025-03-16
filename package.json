@@ -4,7 +4,12 @@
     "description": "",
     "private": true,
     "scripts": {
-        "build:native-web-lib": "cd game_of_life-web-native-lib && wasm-pack build"
+        "dev": "pnpm build:native-web-lib && cd game_of_life-web && pnpm run dev",
+        "build": "pnpm run build:native-web-lib && pnpm run build:web",
+        "build:native-web-lib": "cd game_of_life-web-native-lib && wasm-pack build",
+        "build:web": "cd game_of_life-web && pnpm run build",
+        "lint": "cd game_of_life-web && pnpm run lint",
+        "preview": "cd game_of_life-web && pnpm run preview"
     },
     "packageManager": "pnpm@10.6.2",
     "devDependencies": {

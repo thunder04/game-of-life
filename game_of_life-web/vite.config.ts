@@ -9,4 +9,4 @@ export default defineConfig({
         topLevelAwait(), wasm(),
         react(),
     ],
-})
+});
