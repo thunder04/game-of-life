@@ -1,19 +1,19 @@
 use crate::{timer::Timer, Cell};
 
-// #[wasm_bindgen]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen::prelude::wasm_bindgen)]
 pub struct Universe {
     pub width: u32,
     pub height: u32,
     cells: Vec<Cell>,
 }
 
-// #[wasm_bindgen]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen::prelude::wasm_bindgen)]
 impl Universe {
     pub fn new(width: u32, height: u32) -> Self {
         debug!(%width, %height, "Creating new universe");
 
         let cells = (0..width * height)
-            .map(|idx| {
+            .map(|#[cfg_attr(target_arch = "wasm32", allow(unused))] idx| {
                 #[cfg(target_arch = "wasm32")]
                 if js_sys::Math::random() < 0.5 {
                     Cell::Alive
@@ -78,23 +78,21 @@ impl Universe {
     }
 
     fn live_neighbor_count(&self, row: u32, col: u32) -> u8 {
-        [self.height - 1, 0, 1]
-            .into_iter()
-            .map(|delta_row| {
-                [self.width - 1, 0, 1]
-                    .into_iter()
-                    .map(|delta_col| {
-                        if delta_col == 0 && delta_row == 0 {
-                            0
-                        } else {
-                            let row = (row + delta_row) % self.height;
-                            let col = (col + delta_col) % self.width;
+        let north = if row == 0 { self.height - 1 } else { row - 1 };
+        let south = if row == self.height - 1 { 0 } else { row + 1 };
+        let west = if col == 0 { self.width - 1 } else { col - 1 };
+        let east = if col == self.width - 1 { 0 } else { col + 1 };
+        let mut count = 0u8;
 
-                            self.cells[self.index_of_cell(row, col)] as _
-                        }
-                    })
-                    .sum::<u8>()
-            })
-            .sum::<u8>()
+        count += self.cells[self.index_of_cell(north, west)] as u8; // NW
+        count += self.cells[self.index_of_cell(north, col)] as u8; // N
+        count += self.cells[self.index_of_cell(north, east)] as u8; // NE
+        count += self.cells[self.index_of_cell(row, west)] as u8; // W
+        count += self.cells[self.index_of_cell(row, east)] as u8; // E
+        count += self.cells[self.index_of_cell(south, west)] as u8; // SW
+        count += self.cells[self.index_of_cell(south, col)] as u8; // S
+        count += self.cells[self.index_of_cell(south, east)] as u8; // SE
+
+        count
     }
 }

@@ -1,5 +1,7 @@
-#![feature(test)]
+//! Comment out the "cdylib" crate type and any #[wasm_bindgen] usages
+//! prior to running the benchmark.
 
+#![feature(test)]
 extern crate test;
 
 #[cfg(test)]
@@ -9,7 +11,7 @@ mod benches {
 
     #[bench]
     fn universe_ticks(b: &mut Bencher) {
-        let mut universe = Universe::new(128, 128);
+        let mut universe = Universe::new(256, 256);
 
         b.iter(|| universe.tick());
     }

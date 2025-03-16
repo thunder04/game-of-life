@@ -3,10 +3,11 @@ import { memory } from "@game_of_life/native-lib/game_of_life_web_native_lib_bg.
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./App.scss";
 import { useFps } from "./hooks";
+import { randomHexColor } from "./utils";
 
-const ALIVE_CELL_COLOR = "#FFF";
-const DEAD_CELL_COLOR = "#000";
-const GRID_COLOR = "#FF00FF";
+let aliveCellColor = randomHexColor();
+let gridColor = randomHexColor();
+const deadCellColor = "#000";
 const CELL_SIZE = 10;
 
 function setupCanvas(canvas: HTMLCanvasElement, width: number, height: number) {
@@ -33,7 +34,11 @@ export default function App() {
     const animFrameReq = useRef<null | number>(null);
 
     useEffect(() => {
-        addEventListener("resize", () => setDim([innerWidth, innerHeight]));
+        addEventListener("resize", () => {
+            setDim([innerWidth, innerHeight]);
+            aliveCellColor = randomHexColor();
+            gridColor = randomHexColor();
+        });
     }, []);
 
     useEffect(() => {
@@ -77,7 +82,7 @@ function drawGrid(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
         w = canvas.width;
 
     ctx.beginPath();
-    ctx.strokeStyle = GRID_COLOR;
+    ctx.strokeStyle = gridColor;
 
     const horizontalX = csPlus1 * w + 1;
     const verticalY = csPlus1 * h + 1;
@@ -108,10 +113,10 @@ function drawCells(ctx: CanvasRenderingContext2D, uni: Universe) {
 
     ctx.beginPath();
 
-    ctx.fillStyle = ALIVE_CELL_COLOR;
+    ctx.fillStyle = aliveCellColor;
     filteredCells(ctx, cells, uni, Cell.Alive);
 
-    ctx.fillStyle = DEAD_CELL_COLOR;
+    ctx.fillStyle = deadCellColor;
     filteredCells(ctx, cells, uni, Cell.Dead);
 
     ctx.stroke();
