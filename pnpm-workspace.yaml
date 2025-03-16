@@ -1,0 +1,3 @@
+packages:
+    - game_of_life-web-native-lib/pkg
+    - game_of_life-web

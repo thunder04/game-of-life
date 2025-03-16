@@ -1,0 +1,13 @@
+{
+    "name": "game-of-life",
+    "version": "0.0.1",
+    "description": "",
+    "private": true,
+    "scripts": {
+        "build:native-web-lib": "cd game_of_life-web-native-lib && wasm-pack build"
+    },
+    "packageManager": "pnpm@10.6.2",
+    "devDependencies": {
+        "wasm-pack": "^0.13.1"
+    }
+}
