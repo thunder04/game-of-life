@@ -6,17 +6,13 @@ settings:
 
 importers:
 
-  .:
-    devDependencies:
-      wasm-pack:
-        specifier: ^0.13.1
-        version: 0.13.1
+  .: {}
 
   game_of_life-web:
     dependencies:
       '@game_of_life/native-lib':
         specifier: workspace:game_of_life-web-native-lib@^
-        version: link:../game_of_life-web-native-lib/pkg
+        version: link:../game_of_life-web-native-lib
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -67,7 +63,11 @@ importers:
         specifier: ^3.4.1
         version: 3.4.1(vite@6.2.2(@types/node@22.13.10)(sass-embedded@1.85.1))
 
-  game_of_life-web-native-lib/pkg: {}
+  game_of_life-web-native-lib:
+    devDependencies:
+      wasm-pack:
+        specifier: ^0.13.1
+        version: 0.13.1
 
 packages:
 

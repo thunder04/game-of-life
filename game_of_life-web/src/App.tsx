@@ -1,5 +1,4 @@
-import { Cell, Universe } from "@game_of_life/native-lib";
-import { memory } from "@game_of_life/native-lib/game_of_life_web_native_lib_bg.wasm";
+import { Cell, Universe, memory } from "@game_of_life/native-lib";
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./App.scss";
 import { useFps } from "./hooks";

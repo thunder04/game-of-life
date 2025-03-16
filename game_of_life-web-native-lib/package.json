@@ -1,0 +1,26 @@
+{
+    "name": "game_of_life-web-native-lib",
+    "description": "",
+    "main": "index.js",
+    "packageManager": "pnpm@10.6.2",
+    "type": "module",
+    "types": "index.d.ts",
+    "version": "0.0.0",
+    "scripts": {
+        "wasm-pack": "wasm-pack build --out-name internal --no-pack",
+        "build": "pnpm run wasm-pack --release",
+        "dev": "pnpm run wasm-pack --dev"
+    },
+    "devDependencies": {
+        "wasm-pack": "^0.13.1"
+    },
+    "files": [
+        "index.d.ts",
+        "index.js",
+        "pkg/"
+    ],
+    "sideEffects": [
+        "./pkg/internal.js",
+        "./pkg/snippets/*"
+    ]
+}
