@@ -7,5 +7,10 @@
         "build:web": "cd game_of_life-web && pnpm build",
         "lint": "cd game_of_life-web && pnpm lint",
         "preview": "cd game_of_life-web && pnpm preview"
+    },
+    "pnpm": {
+        "overrides": {
+            "axios": "^1.8.2"
+        }
     }
 }
