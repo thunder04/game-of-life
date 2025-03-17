@@ -1,6 +1,5 @@
 [workspace]
-members = ["game_of_life", "game_of_life-lib", "game_of_life-web-native-lib"]
-default-members = ["game_of_life"]
+members = ["game_of_life-web-native-lib"]
 resolver = "2"
 
 [workspace.dependencies]

@@ -1,11 +1,11 @@
 {
     "packageManager": "pnpm@10.6.2",
     "scripts": {
-        "dev": "cd game_of_life-web-native-lib && pnpm build && cd ../game_of_life-web && pnpm run dev",
+        "dev": "cd game_of_life-web-native-lib && pnpm build && cd ../game_of_life-web && pnpm dev",
         "build": "pnpm build:native-web-lib && pnpm build:web",
         "build:native-web-lib": "cd game_of_life-web-native-lib && pnpm build",
         "build:web": "cd game_of_life-web && pnpm build",
-        "lint": "cd game_of_life-web && pnpm run lint",
-        "preview": "cd game_of_life-web && pnpm run preview"
+        "lint": "cd game_of_life-web && pnpm lint",
+        "preview": "cd game_of_life-web && pnpm preview"
     }
 }
