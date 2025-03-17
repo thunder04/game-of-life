@@ -17,10 +17,10 @@
     "files": [
         "index.d.ts",
         "index.js",
-        "pkg/"
+        "pkg/*"
     ],
     "sideEffects": [
-        "./pkg/internal.js",
-        "./pkg/snippets/*"
+        "./pkg/snippets/*",
+        "./index.js"
     ]
 }
